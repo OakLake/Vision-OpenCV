@@ -11,8 +11,8 @@ by Sammy Hasan
 using namespace std;
 using namespace cv;
 
-bool isCorner(Mat window,int thr,vector<int>* pix_x,ector<int>* pix_y,int cont_N);
-void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s);
+bool isCorner(Mat,int,vector<int>* ,vector<int>* ,int);
+void circle_vals(int,vector<int>*,vector<int>*);
 
 
 

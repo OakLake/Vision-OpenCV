@@ -11,14 +11,17 @@ by Sammy Hasan
 using namespace std;
 using namespace cv;
 
-bool isCorner(Mat window,int thr,vector* pixels);
-vector<int[]> circle_vals(int radius); // takes in radius and returns list of [x,y] correspoding to pixels on the edge of the circle, raster of circle
+bool isCorner(Mat window,int thr,vector<int>* pix_x,ector<int>* pix_y,int cont_N);
+void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s);
 
+
+
+/* MAIN ()*/
 int main(){
 
   int window_size = 7; // 7x7
   int intensity_thr = ;
-  int contig = 9; // number of required contigous pixels for a corner
+  int contig = 9; // min number of required contigous pixels for a corner
 
   vector<int>* ixX_s = new vector<int>();
   vector<int>* ixY_s = new vector<int>();
@@ -27,7 +30,7 @@ int main(){
   // vectors are now populated
 
   Mat image,grey_image,roi;
-  image = imread("./image",CV_U8C1);
+  image = imread("./image.jpg",CV_U8C1);
 
   // convert to greyscale
   cvColor(image,grey_image,CV_BGR2GRAY);
@@ -95,13 +98,14 @@ bool isCorner(Mat window,int thr,vector<int>* pix_x,ector<int>* pix_y,int cont_N
         cached = thr_test(l);
       }
     }
+    return cont_count >= cont_N;
   }
   return false;
 
 }
 
 
-void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s; ){
+void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s){
 
 
   Mat mask = Mat::zeros(mask_dim+2,mask_dim+2,CV_8UC1); // +2: padding on each side

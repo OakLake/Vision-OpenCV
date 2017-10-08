@@ -5,6 +5,8 @@ code that might be helpful for someone
 - threading.cpp : threading using c++ <thread> with a safe queue locked with mutex.
   this simple example demonstrates concurent access to a safe queue as seen by the print statements.
   
-- video_pixel_threaded.cpp: using opencv videocapture for live video pixelisation using threads.
+- video_pixel_threaded.cpp: openCV videocapture for live video pixelisation using threads.
 
-- disparity.cpp: using opencv StereoBM to find the disparity map from two stereo images.
+- disparity.cpp: openCV StereoBM for find the disparity map from two stereo images.
+
+- corner_detect.cpp: FAST (Features from Accelerated Segment Test) implementation from scratch with openCV. untested.

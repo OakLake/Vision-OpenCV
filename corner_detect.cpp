@@ -28,7 +28,7 @@ int main(int argc,char** argv){
   int window_size = 7; // 7x7
   int intensity_thr = atoi(argv[2]);
   cout << "intensity_thr: " << intensity_thr << endl;
-  int contig = 14; // min number of required contigous pixels for a corner
+  int contig = 12; // min number of required contigous pixels for a corner
 
   vector<int>* ixX_s = new vector<int>();
   vector<int>* ixY_s = new vector<int>();
@@ -73,16 +73,26 @@ bool isCorner(const Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int
   // check if pixel intenisties are larger than thr from centre intenisty
   int cntr_pix_I = window.at<uchar>(window.rows/2,window.cols/2);
   int pix_I = 0;
-  int x,y;
+  int x,y,pos;
 
-  vector<bool> thr_test;
+  vector<int> thr_test;
+  /*
+  0 - same
+  1 - darker
+  2 - brighter
+  */
 
   for (int v=0;v<pix_x->size();v++){
     x = pix_x->at(v);
     y = pix_y->at(v);
 
     pix_I = (int)window.at<uchar>(x,y);
-    thr_test.push_back(abs(pix_I-cntr_pix_I) >= thr);
+    if (abs(pix_I-cntr_pix_I) < thr){
+      thr_test.push_back(0);
+    }else{
+      pos = (pix_I-cntr_pix_I) > 0 ? 2:1;
+      thr_test.push_back(pos);
+    }
   }
 
   // thr_test now populated using threshold test
@@ -91,21 +101,22 @@ bool isCorner(const Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int
   int chk[4] = {1,9,5,13};
   int c = 0;
   for(int z=0;z<4;z++){
-    if(thr_test.at(chk[z]-1))
+    if(thr_test.at(chk[z]-1) != 0)
       c++;
   }
   if(c>=3){
       // perform full check with contingency
       // looping over thr_test
-      bool cached = thr_test.at(0);
+      int cached = thr_test.at(0);
       int cont_count = 0;
+
       for(int l=1;l<thr_test.size();l++){
-        if(thr_test.at(l) == cached){
+        if(thr_test.at(l) == cached && thr_test.at(l) != 0){
           cont_count++;
         }else{
           cont_count = 0;
-          cached = thr_test.at(l);
         }
+        cached = thr_test.at(l);
       }
       return cont_count >= cont_N;
 

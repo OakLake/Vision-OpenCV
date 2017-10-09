@@ -14,7 +14,9 @@ using namespace cv;
 
 
 bool isCorner(Mat,int,vector<int>* ,vector<int>* ,int );
-void circle_vals(int,vector<int>*,vector<int>*);
+// void circle_vals(int,vector<int>*,vector<int>*);
+void populate_vecs(vector<int>*,vector<int>*);
+
 
 void debug(String text){
   cerr << text << endl;
@@ -24,18 +26,21 @@ void debug(String text){
 int main(int argc,char** argv){
 
   int window_size = 7; // 7x7
-  int intensity_thr = atoi(argv[1]);
+  int intensity_thr = atoi(argv[2]);
   cout << "intensity_thr: " << intensity_thr << endl;
-  int contig = 12; // min number of required contigous pixels for a corner
+  int contig = 14; // min number of required contigous pixels for a corner
 
   vector<int>* ixX_s = new vector<int>();
   vector<int>* ixY_s = new vector<int>();
 
-  circle_vals(window_size,ixX_s,ixY_s);
+  // circle_vals(window_size,ixX_s,ixY_s);
+  populate_vecs(ixX_s,ixY_s);
   // vectors are now populated
 
-  Mat grey_image,roi;
-  grey_image = imread("./image2.jpg",CV_LOAD_IMAGE_GRAYSCALE); // also converts to grey scale
+  Mat image,grey_image,roi;
+  grey_image = imread(argv[1],CV_LOAD_IMAGE_GRAYSCALE); // also converts to grey scale
+  image = grey_image.clone();
+  cvtColor(grey_image,image,CV_GRAY2BGR);
 
 
   // slide over the input image
@@ -45,7 +50,7 @@ int main(int argc,char** argv){
 
       // check if corner exists:
       if (isCorner(roi,intensity_thr,ixX_s,ixY_s,contig)){
-        circle(grey_image,Point(x+window_size/2-1,y+window_size/2-1),4,255,1);
+        circle(image,Point(x+window_size/2-1,y+window_size/2-1),3,Scalar(255,0,0),-1);
       }
 
     }
@@ -53,7 +58,8 @@ int main(int argc,char** argv){
 
 
   namedWindow("Original",WINDOW_AUTOSIZE);
-  imshow("Original",grey_image);
+  imshow("Original",image);
+  imwrite("detected.png",image);
 
 
   waitKey(0);
@@ -81,11 +87,14 @@ bool isCorner(const Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int
 
   // thr_test now populated using threshold test
 
-  // quick check (1,9),(5,13) points for edge
-  // (1,9)
-  if (thr_test.at(0) && thr_test.at(9)){
-    // (5,13)
-    if(thr_test.at(4) && thr_test.at(12)){
+  // quick check (1,9,5,13) points
+  int chk[4] = {1,9,5,13};
+  int c = 0;
+  for(int z=0;z<4;z++){
+    if(thr_test.at(chk[z]-1))
+      c++;
+  }
+  if(c>=3){
       // perform full check with contingency
       // looping over thr_test
       bool cached = thr_test.at(0);
@@ -100,8 +109,6 @@ bool isCorner(const Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int
       }
       return cont_count >= cont_N;
 
-    }
-
   }else{
     return false;
   }
@@ -110,12 +117,24 @@ bool isCorner(const Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int
 }
 
 
+
+// remedy measure, introduce code redundecy for still using vectors
+void populate_vecs(vector<int>* pix_x,vector<int>* pix_y){
+  int x[16] = {0,0,1,2,3,4,5,6,6,6,5,4,3,2,1,0};
+  int y[16] = {3,4,5,6,6,6,5,4,3,2,1,0,0,0,1,2};
+  for(int i=0;i<16;i++){
+    pix_x->push_back(x[i]);
+    pix_y->push_back(y[i]);
+  }
+  cout << "populated" << endl;
+}
+/*
 void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s){
 
 
   Mat mask = Mat::zeros(mask_dim+2,mask_dim+2,CV_8UC1); // +2: padding on each side
   int midPt = mask_dim/2;
-  circle(mask,Point(midPt,midPt),midPt,Scalar(255),1);
+  circle(mask,Point(midPt+1,midPt+1),midPt,Scalar(255),1);
   mask.at<uchar>(1,midPt-1) = 0; // directs the search
   // starting at mid of top row, pixel 1:
   // indeces start from 0,
@@ -155,3 +174,4 @@ void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s){
 
 
 }
+*/

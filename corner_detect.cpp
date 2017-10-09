@@ -11,8 +11,8 @@ by Sammy Hasan
 using namespace std;
 using namespace cv;
 
-bool isCorner(Mat window,int thr,vector<int>* pix_x,ector<int>* pix_y,int cont_N);
-void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s);
+bool isCorner(Mat,int,vector<int>* ,vector<int>* ,int );
+void circle_vals(int,vector<int>*,vector<int>*);
 
 
 
@@ -20,7 +20,7 @@ void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s);
 int main(){
 
   int window_size = 7; // 7x7
-  int intensity_thr = ;
+  int intensity_thr = 42;
   int contig = 9; // min number of required contigous pixels for a corner
 
   vector<int>* ixX_s = new vector<int>();
@@ -56,7 +56,7 @@ int main(){
 }
 
 
-bool isCorner(Mat window,int thr,vector<int>* pix_x,ector<int>* pix_y,int cont_N){
+bool isCorner(Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int cont_N){
 
   // check if pixel intenisties are larger than thr from centre intenisty
   int cntr_pix_I = window.at<int>(window/2,window/2);
@@ -75,30 +75,30 @@ bool isCorner(Mat window,int thr,vector<int>* pix_x,ector<int>* pix_y,int cont_N
 
   // thr_test now populated using threshold test
 
-  // quick check 4 points on ver and hor axis
+  // quick check (1,9),(5,13) points for edge
+  // (1,9)
+  if (thr_test(0) && thr_test(9)){
+    // (5,13)
+    if(thr_test(4) && thr_test(12)){
 
-  int num_true = 0;
-  for(int s=0;s<4;s++){
-    if (thr_test(s*skip+1)){
-      num_true++;
-    }
-  }
-  if (num_true == 1 or num_true == 3){
-    return true; // is corner based on quick check
-  }else{
-    // perform full check with contingency
-    // looping over thr_test
-    bool cached = thr_test(0);
-    int cont_count = 0;
-    for(int l=1;l<thr_test.size();l++){
-      if(thr_test(l) == cached){
-        cont_count++;
-      }else{
-        cont_count = 0;
-        cached = thr_test(l);
+      // perform full check with contingency
+      // looping over thr_test
+      bool cached = thr_test(0);
+      int cont_count = 0;
+      for(int l=1;l<thr_test.size();l++){
+        if(thr_test(l) == cached){
+          cont_count++;
+        }else{
+          cont_count = 0;
+          cached = thr_test(l);
+        }
       }
+      return cont_count >= cont_N;
+
     }
-    return cont_count >= cont_N;
+
+  }else{
+    return false;
   }
   return false;
 
@@ -147,5 +147,6 @@ void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s){
 
   ixX_s->push_back(0);
   ixY_s->push_back(midPt-2); // -2 =  for padding (-1) + last pixel in loop (-1)
+
 
 }

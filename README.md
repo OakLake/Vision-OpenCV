@@ -11,4 +11,4 @@ code that might be helpful for someone
 
 - corner_detect.cpp: FAST (Features from Accelerated Segment Test) implementation from scratch with openCV.
 
-![Alt text](https://github.com/OakLake/Code_for_the_People/blob/master/imgs/simple.jpg "Detected Corners")
+     ![Alt text](https://github.com/OakLake/Code_for_the_People/blob/master/imgs/detected.png "Detected Corners")

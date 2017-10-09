@@ -9,4 +9,6 @@ code that might be helpful for someone
 
 - disparity.cpp: openCV StereoBM for find the disparity map from two stereo images.
 
-- corner_detect.cpp: FAST (Features from Accelerated Segment Test) implementation from scratch with openCV. untested.
+- corner_detect.cpp: FAST (Features from Accelerated Segment Test) implementation from scratch with openCV.
+
+![Alt text](/OakLake/Code_for_the_People/imgs/simple.jpg?raw=true "Detected Corners")

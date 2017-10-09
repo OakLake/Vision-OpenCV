@@ -7,6 +7,7 @@ by Sammy Hasan
 # include <opencv2/opencv.hpp>
 # include <iostream>
 # include <vector>
+# include <string>
 
 using namespace std;
 using namespace cv;
@@ -15,40 +16,44 @@ using namespace cv;
 bool isCorner(Mat,int,vector<int>* ,vector<int>* ,int );
 void circle_vals(int,vector<int>*,vector<int>*);
 
-
+void debug(String text){
+  cerr << text << endl;
+}
 
 /* MAIN ()*/
-int main(){
+int main(int argc,char** argv){
 
   int window_size = 7; // 7x7
-  int intensity_thr = 42;
-  int contig = 9; // min number of required contigous pixels for a corner
+  int intensity_thr = atoi(argv[1]);
+  cout << "intensity_thr: " << intensity_thr << endl;
+  int contig = 12; // min number of required contigous pixels for a corner
 
   vector<int>* ixX_s = new vector<int>();
   vector<int>* ixY_s = new vector<int>();
 
-  circle_vals(window_size);
+  circle_vals(window_size,ixX_s,ixY_s);
   // vectors are now populated
 
-  Mat image,grey_image,roi;
-  image = imread("./image.jpg",CV_U8C1);
+  Mat grey_image,roi;
+  grey_image = imread("./image2.jpg",CV_LOAD_IMAGE_GRAYSCALE); // also converts to grey scale
 
-  // convert to greyscale
-  cvColor(image,grey_image,CV_BGR2GRAY);
 
   // slide over the input image
-  for(int x=0;x<grey_image.rows-window_size;x++){
-    for(int y=0;y<grey_image.cols-window_size;y++){
-      roi = grey_image(Rect(x,y,window_size,window_size))
-      if (isCorner(roi,intensity_thr,pixels,contig)){
-        circle(image,Point(x+window_size/2-1,y+window_size/2-1),4,Scalar(136,50,203),2);
+  for(int x=0;x<grey_image.cols-window_size;x++){
+    for(int y=0;y<grey_image.rows-window_size;y++){
+      roi = grey_image(Rect(x,y,window_size,window_size));
+
+      // check if corner exists:
+      if (isCorner(roi,intensity_thr,ixX_s,ixY_s,contig)){
+        circle(grey_image,Point(x+window_size/2-1,y+window_size/2-1),4,255,1);
       }
+
     }
   }
 
 
-  namedWindow("Original",WIDOW_AUTOSIZE);
-  imshow("Original",image);
+  namedWindow("Original",WINDOW_AUTOSIZE);
+  imshow("Original",grey_image);
 
 
   waitKey(0);
@@ -57,20 +62,20 @@ int main(){
 }
 
 
-bool isCorner(Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int cont_N){
+bool isCorner(const Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int cont_N){
 
   // check if pixel intenisties are larger than thr from centre intenisty
-  int cntr_pix_I = window.at<int>(window/2,window/2);
+  int cntr_pix_I = window.at<uchar>(window.rows/2,window.cols/2);
   int pix_I = 0;
   int x,y;
 
-  vector<bool> thr_test = new vector<bool>();
+  vector<bool> thr_test;
 
-  for (int v=0;v<pix_x->size()<v++){
-    x = pix_x(v);
-    y = pix_y(v);
+  for (int v=0;v<pix_x->size();v++){
+    x = pix_x->at(v);
+    y = pix_y->at(v);
 
-    pix_I = window.at<int>(x,y);
+    pix_I = (int)window.at<uchar>(x,y);
     thr_test.push_back(abs(pix_I-cntr_pix_I) >= thr);
   }
 
@@ -78,20 +83,19 @@ bool isCorner(Mat window,int thr,vector<int>* pix_x,vector<int>* pix_y,int cont_
 
   // quick check (1,9),(5,13) points for edge
   // (1,9)
-  if (thr_test(0) && thr_test(9)){
+  if (thr_test.at(0) && thr_test.at(9)){
     // (5,13)
-    if(thr_test(4) && thr_test(12)){
-
+    if(thr_test.at(4) && thr_test.at(12)){
       // perform full check with contingency
       // looping over thr_test
-      bool cached = thr_test(0);
+      bool cached = thr_test.at(0);
       int cont_count = 0;
       for(int l=1;l<thr_test.size();l++){
-        if(thr_test(l) == cached){
+        if(thr_test.at(l) == cached){
           cont_count++;
         }else{
           cont_count = 0;
-          cached = thr_test(l);
+          cached = thr_test.at(l);
         }
       }
       return cont_count >= cont_N;
@@ -112,7 +116,7 @@ void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s){
   Mat mask = Mat::zeros(mask_dim+2,mask_dim+2,CV_8UC1); // +2: padding on each side
   int midPt = mask_dim/2;
   circle(mask,Point(midPt,midPt),midPt,Scalar(255),1);
-  mask.at<int>(1,midPt-1) = 0; // directs the search
+  mask.at<uchar>(1,midPt-1) = 0; // directs the search
   // starting at mid of top row, pixel 1:
   // indeces start from 0,
   int x_row = 1;
@@ -130,7 +134,7 @@ void circle_vals(int mask_dim,vector<int>* ixX_s,vector<int>* ixY_s){
     brk_flag = 0;
     for(int xp = -1;xp<2;xp++){
       for(int yp = -1;yp<2;yp++){
-        if(mask.at<int>(x_row+xp,y_col+yp) == 255){
+        if((int)mask.at<uchar>(x_row+xp,y_col+yp) == 255){
           x_row += xp;
           y_col += yp;
           brk_flag = 1;

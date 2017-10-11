@@ -15,4 +15,4 @@ code that might be helpful for someone
      
 - track.cpp: corner detection using goodFeaturesToTrack and tracking with calcOpticalFlowPyrLK in openCV. Tried with KITTI dataset (http://www.cvlibs.net/datasets/kitti/raw_data.php?type=city)
 
-![](https://github.com/OakLake/Code_for_the_People/blob/master/imgs/QvO1J4.gif)
+     ![](https://github.com/OakLake/Code_for_the_People/blob/master/imgs/QvO1J4.gif)

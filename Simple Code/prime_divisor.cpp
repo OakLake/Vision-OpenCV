@@ -1,5 +1,6 @@
 // prime divisor
 # include <iostream>
+# include <list>
 
 using namespace std;
 
@@ -21,7 +22,8 @@ bool is_prime(int n)
 int main(){
 
   int n = 45;
-
+  list<int> facts_l;
+  
   for(int i = n-1;i>1;i--){
     // first, check divisor
     if (n%i == 0){
@@ -29,12 +31,18 @@ int main(){
       bool isPrimeDiv = is_prime(i);
       // add to list
       if (isPrimeDiv){
-        // primeDivsList.push_back(i);
-        cout << i << endl;
+        facts_l.push_back(i);
+        //cout << i << endl;
         // should be of max first due to decrementation of i
       }
     }
   }
 
-
+cout << "Prime Divisors/Factorials { " ;
+  for(int f : facts_l){
+    cout << f << " ";
+  }
+  cout << "}" << endl;
+  
+  return 0;
 }

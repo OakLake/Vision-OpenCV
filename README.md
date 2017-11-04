@@ -2,7 +2,7 @@
 code that might be helpful for someone
 
 ## Contents
-- threading.cpp : threading using c++ <thread> with a safe queue locked with mutex.
+- threading.cpp: threading using c++ <thread> with a safe queue locked with mutex.
   this simple example demonstrates concurent access to a safe queue as seen by the print statements.
 
 - video_pixel_threaded.cpp: openCV videocapture for live video pixelisation using threads.
@@ -22,3 +22,5 @@ code that might be helpful for someone
 - prime_divisor.cpp: finding the prime divisors or prime factorials of a number (int)
 
 - string_switch.cpp: switches "char"s of a string only once, run it !
+
+- morse.cpp: converting text to morse,using C++ <map>,<ifstream> and <string>.

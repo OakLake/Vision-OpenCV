@@ -10,6 +10,7 @@
 # include <vector>
 # include <map>
 
+
 std::vector<std::string> split_string(const std::string s){
     std::istringstream ss(s);
     std::string item;
@@ -25,13 +26,17 @@ std::vector<std::string> split_string(const std::string s){
 int main(){
 
   std::ifstream morse_file("morse_file.txt");
+  std::ofstream morse_out("morse_text_code.txt");
 
   std::map<std::string,std::string> morse_map;
+  std::map<std::string,std::string> morse_map_rev;
+
   std::vector<std::string> buffer;
   std::string line;
   while(getline(morse_file,line)){
     buffer = split_string(line);
     morse_map.insert(std::pair<std::string,std::string> (buffer[0],buffer[1]));
+    // morse_map_rev.insert(std::pair<std::string,std::string> (buffer[1],buffer[0]));
   }
 
   for(auto b : morse_map){
@@ -41,8 +46,9 @@ int main(){
   std::cout << "enter text to morsify" << std::endl;
   std::string text;
   std::getline(std::cin,text);
-  for (char cc : text ){
+  morse_out << text << "\n\n\n";
 
+  for (char cc : text ){
     cc = (char)::tolower(cc);
     std::string l(1,cc);
 
@@ -50,10 +56,12 @@ int main(){
       l = morse_map[l];
     }
     std::cout << l << " ";
+    morse_out << l;
   }
   std::cout << std::endl;
 
-
+  morse_file.close();
+  morse_out.close();
   return 0;
 }
 

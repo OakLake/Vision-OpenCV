@@ -24,3 +24,5 @@ code that might be helpful for someone
 - string_switch.cpp: switches "char"s of a string only once, run it !
 
 - morse.cpp: converting text to morse,using C++ <map>,<ifstream> and <string>.
+
+- genetic.cpp: simple genetic algorithm, crossover and mutation. fitness = number of 1's

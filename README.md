@@ -26,3 +26,5 @@ code that might be helpful for someone
 - morse.cpp: converting text to morse,using C++ <map>,<ifstream> and <string>.
 
 - genetic.cpp: simple genetic algorithm, crossover and mutation. fitness = number of 1's
+
+- cell.cpp: cellular automata in terminal.

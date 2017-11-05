@@ -10,6 +10,8 @@ rule 30 for chaos
 # include <algorithm>
 # include <vector>
 # include <bitset>
+# include <thread>
+# include <chrono>
 
 using namespace std;
 int g(){
@@ -44,7 +46,8 @@ int main(int argc, const char** argv){
 
   generate(stream.begin(),stream.end(),g);
 
-  for(int x = 0;x<50;x++){
+  for(int x = 0;x<5000;x++){
+    this_thread::sleep_for(chrono::milliseconds(100));
     padded = stream;
     padded.insert(padded.begin(),stream.front());
     padded.insert(padded.end(),stream.back());

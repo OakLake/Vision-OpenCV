@@ -14,9 +14,7 @@ rule 30 for chaos
 # include <chrono>
 
 using namespace std;
-int g(){
-  return rand()%2;
-}
+
 
 int t(int i,int j, int k,const int rule){
   string result = " ";
@@ -44,7 +42,7 @@ int main(int argc, const char** argv){
   vector<int> stream(70);
   vector<int> padded;
 
-  generate(stream.begin(),stream.end(),g);
+  generate(stream.begin(),stream.end(),[](){return rand()%2;});
 
   for(int x = 0;x<5000;x++){
     this_thread::sleep_for(chrono::milliseconds(100));

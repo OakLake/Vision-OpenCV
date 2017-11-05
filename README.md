@@ -27,4 +27,4 @@ code that might be helpful for someone
 
 - genetic.cpp: simple genetic algorithm, crossover and mutation. fitness = number of 1's
 
-- cell.cpp: animated cellular automata in terminal (aquint your eyes for maximum efficiency).
+- cell.cpp: animated cellular automata in terminal (squint your eyes for maximum efficiency).

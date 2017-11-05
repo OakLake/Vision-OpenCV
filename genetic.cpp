@@ -15,8 +15,8 @@ fitness = number of ones
 # include <random>
 # include <algorithm>
 # include <cstdlib>
-# include <boost/thread.hpp>
-# include <boost/chrono.hpp>
+//# include <boost/thread.hpp>
+//# include <boost/chrono.hpp>
 
 using namespace std;
 

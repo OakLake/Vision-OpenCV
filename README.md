@@ -28,3 +28,5 @@ code that might be helpful for someone
 - genetic.cpp: simple genetic algorithm, crossover and mutation. fitness = number of 1's
 
 - cell.cpp: cellular automata in terminal (animated).
+
+- string_gen.cpp: generate random string of defined length range, save to file, load from file, and sort.

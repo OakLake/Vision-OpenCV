@@ -18,6 +18,7 @@ int g(){
   return rand()%2;
 }
 
+
 int t(int i,int j, int k,const int rule){
   string result = " ";
   // cout << j << " : "<< i << " : " << k << endl;
@@ -45,6 +46,7 @@ int main(int argc, const char** argv){
   vector<int> padded;
 
   generate(stream.begin(),stream.end(),g);
+  generate(stream.begin(),stream.end(),[](){return rand()%2;});
 
   for(int x = 0;x<5000;x++){
     this_thread::sleep_for(chrono::milliseconds(100));

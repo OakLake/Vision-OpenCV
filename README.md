@@ -30,3 +30,5 @@ code that might be helpful for someone
 - cell.cpp: animated cellular automata in terminal (squint your eyes for maximum efficiency).
 
 - str_gen_sort.cpp: generate random string of predefined length range, save to file,load and sort.
+
+- cv_colorCircDetection.cpp: detecting coloured circles with HoughCircles in opencv, with slider for adjusting parameters (colour and tuning).

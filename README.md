@@ -36,3 +36,7 @@ code that might be helpful for someone
 - kalman.py: simple kalman filter.
 
 ![Alt text](https://github.com/OakLake/Code_for_the_People/blob/master/imgs/kalman.png)
+
+- aruco.cpp: ArUco marker detection.
+
+![Alt text](https://github.com/OakLake/Code_for_the_People/blob/master/imgs/aruco_detected.png)

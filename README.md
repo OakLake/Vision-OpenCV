@@ -32,3 +32,7 @@ code that might be helpful for someone
 - str_gen_sort.cpp: generate random string of predefined length range, save to file,load and sort.
 
 - cv_colorCircDetection.cpp: detecting coloured circles with HoughCircles in opencv, with slider for adjusting parameters (colour and tuning).
+
+- kalman.py: simple kalman filter.
+
+![Alt text](https://github.com/OakLake/Code_for_the_People/blob/master/imgs/kalman.png)

@@ -87,7 +87,16 @@ int main(int argc,char** argv){
 
 
   // Warp drives activated :)
-  Mat warpped;
+  Mat warpped,warpped_full;
+
+  int cols = img1.cols + img2.cols;
+  int rows = img1.rows;
+  Size si(cols,rows);
+
+  warpPerspective(img2,warpped_full, H, si);
+  imshow("Warppie",warpped_full);
+
+
   warpPerspective(img2,warpped, H, img2.size());
 
 
